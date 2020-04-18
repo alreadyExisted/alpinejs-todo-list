@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AlpineJS Todo List</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+    <script
+      src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
+      defer
+    ></script>
+  </head>
+  <body>
+    <main class="main" x-data="todos()" x-init="init()">
+      <h1 class="title">todos</h1>
+      <div class="input-group mb-3">
+        <div
+          class="input-group-prepend"
+          x-show.transition.duration.500ms="todos.length"
+        >
+          <div class="input-group-text">
+            <input type="checkbox" x-model="isCompleteAll" />
+          </div>
+        </div>
+        <input
+          type="text"
+          class="form-control"
+          :class="{ 'is-empty': !todos.length }"
+          x-model="task"
+          @keydown.enter="addTask()"
+        />
+        <div
+          class="input-group-append"
+          x-show.transition.duration.500ms="todos.length"
+        >
+          <button
+            class="btn btn-danger"
+            type="button"
+            @click="reset()"
+          >
+            X
+          </button>
+        </div>
+      </div>
+      <template x-for="(todo, index) in filteredTodos" :key="index">
+        <li
+          class="input-group mb-3"
+          :key="index"
+          :class="{ 'is-complete': todo.isComplete === true, 'is-editing': todo.isEditing === true, }"
+        >
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <input type="checkbox" x-model="todo.isComplete" />
+            </div>
+          </div>
+          <input
+            type="text"
+            class="form-control task-input"
+            :x-ref="index"
+            x-show="todo.isEditing"
+            x-model="todo.task"
+            @blur="setIsEditingTask(index, false)"
+            @keydown.enter="setIsEditingTask(index, false)"
+          />
+          <label
+            class="form-control task"
+            x-show="!todo.isEditing"
+            x-text="todo.task"
+            @dblclick="setIsEditingTask(index, true)"
+          ></label>
+          <div class="input-group-append">
+            <button
+              class="btn btn-danger"
+              type="button"
+              @click="removeTask(index)"
+            >
+              Delete
+            </button>
+          </div>
+        </li>
+      </template>
+      <div class="outro">
+        <div class="alert alert-secondary">
+          <span x-text="todos.length"></span>
+          <span>items left</span>
+        </div>
+        <button class="btn btn-primary" type="button" @click="setFilter(0)">
+          All
+        </button>
+        <button class="btn btn-primary" type="button" @click="setFilter(1)">
+          Active
+        </button>
+        <button class="btn btn-primary" type="button" @click="setFilter(2)">
+          Completed
+        </button>
+      </div>
+    </main>
+    <script src="/scripts.js"></script>
+  </body>
+</html>

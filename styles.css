@@ -1,0 +1,39 @@
+.main {
+  max-width: 400px;
+  padding: 200px 15px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.title {
+  text-align: center;
+}
+
+.task {
+  display: flex;
+  align-items: center;
+  flex: 1 0 auto;
+  margin-bottom: 0;
+  padding-left: 10px;
+}
+
+.is-empty {
+  border-radius: .25rem !important;
+}
+
+.is-complete .task {
+  text-decoration: line-through;
+}
+
+.is-editing .task {
+  color: red;
+}
+
+.outro {
+  display: flex;
+  justify-content: space-between;
+}
+
+.outro .alert {
+  margin-bottom: 0;
+}
